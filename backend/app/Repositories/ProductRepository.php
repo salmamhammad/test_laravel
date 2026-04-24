@@ -1,8 +1,8 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Product;
 use App\Interfaces\ProductRepositoryInterface;
+use App\Models\Product;
 
 class ProductRepository implements ProductRepositoryInterface
 {
@@ -11,44 +11,51 @@ class ProductRepository implements ProductRepositoryInterface
         $query = Product::with('category:id,name');
         // список фильтров
         //фильтр: q
-        if (!empty($filters['q'])) {
+        if (! empty($filters['q'])) {
             $query->where('name', 'LIKE', "%{$filters['q']}%");
         }
         //фильтр: price_from, price_to
-        if (!empty($filters['price_from'])) {
+        if (! empty($filters['price_from'])) {
             $query->where('price', '>=', $filters['price_from']);
         }
 
-        if (!empty($filters['price_to'])) {
+        if (! empty($filters['price_to'])) {
             $query->where('price', '<=', $filters['price_to']);
         }
-         //фильтр: category_id
-        if (!empty($filters['category_id'])) {
+        //фильтр: category_id
+        if (! empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
         }
         //фильтр: in_stock (true/false)
-        if (isset($filters['in_stock'])) {
+        if (array_key_exists('in_stock', $filters) && $filters['in_stock'] !== null && $filters['in_stock'] !== '') {
             $query->where('in_stock', filter_var($filters['in_stock'], FILTER_VALIDATE_BOOLEAN));
         }
-         //фильтр: rating_from
-        if (!empty($filters['rating_from'])) {
-            $query->where('rating', '>=', $filters['rating_from']);
+        //фильтр: rating_from
+        if (! empty($filters['rating_from'])) {
+            $query->where('rating', '>=', min(5, max(0, (float) $filters['rating_from'])));
         }
         //Сортировка
-        switch ($filters['sort'] ?? null) {
+        switch ($filters['sort'] ?? 'newest') {
             case 'price_asc':
-                $query->orderBy('price');
+                $query->orderBy('price', 'asc');
                 break;
+
             case 'price_desc':
-                $query->orderByDesc('price');
+                $query->orderBy('price', 'desc');
                 break;
+
             case 'rating_desc':
-                $query->orderByDesc('rating');
+                $query->orderBy('rating', 'desc');
                 break;
+
+            case 'newest':
             default:
-                $query->orderByDesc('created_at');
+                $query->orderBy('created_at', 'desc');
+                break;
         }
         //Пагинация
-        return $query->paginate(10);
+        $perPage = isset($filters['per_page']) ? (int) $filters['per_page'] : 10;
+
+        return $query->paginate($perPage);
     }
 }
