@@ -9,6 +9,8 @@ function App() {
     price_from: "",
     price_to: "",
     category_id: "",
+    in_stock: "",
+    rating_from: "",
     sort: "newest",
   });
 const [categories, setCategories] = useState([]);
@@ -44,20 +46,33 @@ useEffect(() => {
           </option>
         ))}
       </select>
+      <select name="in_stock" onChange={handleChange}>
+         <option value="">All</option>
+         <option value="true">In Stock</option>
+         <option value="false">Out of Stock</option>
+      </select>
       <select name="sort" onChange={handleChange}>
         <option value="newest">Newest</option>
         <option value="price_asc">Price ↑</option>
         <option value="price_desc">Price ↓</option>
         <option value="rating_desc">Rating</option>
       </select>
-
+      <input
+        name="rating_from"
+        placeholder="Min rating (0-5)"
+        type="number"
+        step="0.1"
+        min="0"
+        max="5"
+        onChange={handleChange}
+      />
       <button onClick={loadProducts}>Apply</button>
 
       {/* List */}
       <ul>
         {products.map((p) => (
           <li key={p.id}>
-            {p.name} - price: ${p.price} - rate: {p.rating} - {p.category?.name}
+            {p.name} - price: ${p.price} - rate: {p.rating}  - {p.category?.name}
           </li>
         ))}
       </ul>
