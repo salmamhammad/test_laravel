@@ -55,11 +55,11 @@
 
 Данные передаются и принимаются в формате JSON.
 ---
-##setup : backend
-composer install
-php artisan migrate
-php artisan db:seed
-php artisan serve
-##setup : frontend
-npm install
-npm start
+## setup : backend
+- composer install
+- php artisan migrate
+- php artisan db:seed
+- php artisan serve
+## setup : frontend
+- npm install
+- npm start
