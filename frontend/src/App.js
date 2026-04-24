@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchProducts } from "./api";
+import { fetchProducts, fetchCategories } from "./api";
+
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -7,9 +8,13 @@ function App() {
     q: "",
     price_from: "",
     price_to: "",
+    category_id: "",
     sort: "newest",
   });
-
+const [categories, setCategories] = useState([]);
+useEffect(() => {
+  fetchCategories().then(res => setCategories(res.data));
+}, []);
   const loadProducts = async () => {
     const res = await fetchProducts(filters);
     setProducts(res.data.data);
@@ -31,7 +36,14 @@ function App() {
       <input name="q" placeholder="Search" onChange={handleChange} />
       <input name="price_from" placeholder="Min price" onChange={handleChange} />
       <input name="price_to" placeholder="Max price" onChange={handleChange} />
-
+      <select name="category_id" onChange={handleChange}>
+        <option value="">All Categories</option>
+        {categories.map(c => (
+          <option key={c.id} value={c.id}>
+            {c.name}
+          </option>
+        ))}
+      </select>
       <select name="sort" onChange={handleChange}>
         <option value="newest">Newest</option>
         <option value="price_asc">Price ↑</option>
@@ -45,7 +57,7 @@ function App() {
       <ul>
         {products.map((p) => (
           <li key={p.id}>
-            {p.name} - price: ${p.price} - rate: {p.rating}
+            {p.name} - price: ${p.price} - rate: {p.rating} - {p.category?.name}
           </li>
         ))}
       </ul>

@@ -8,7 +8,7 @@ class ProductRepository implements ProductRepositoryInterface
 {
     public function getFilteredProducts(array $filters)
     {
-        $query = Product::query();
+        $query = Product::with('category:id,name');
 
         if (!empty($filters['q'])) {
             $query->where('name', 'LIKE', "%{$filters['q']}%");
