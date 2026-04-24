@@ -4,56 +4,55 @@
 - Backend: PHP (Laravel)
 - Frontend: React.js
 
-## Overview
-This project is a simple product management API with a React frontend interface.
+## Обзор
+Этот проект представляет собой простой API для управления продуктами с интерфейсом на React.
 
 ### Products
 - `GET /api/products`  
-  Returns a paginated list of products with filtering and sorting options.
+  Возвращает постраничный список товаров с возможностью фильтрации и сортировки.
 
 ### Categories
 - `GET /api/categories`  
-  Returns a list of all product categories.
+  Возвращает список всех категорий товаров.
 
 ---
 
-## Features
+## Функции
 
 ###  Product Search & Filters
-The `/api/products` endpoint supports the following query parameters:
+Конечная точка `/api/products` поддерживает следующие параметры запроса:
 
-- `q` → search products by name (substring match)
-- `price_from` → minimum price filter
-- `price_to` → maximum price filter
-- `category_id` → filter by category (selected by ID)
-- `in_stock` → filter by availability (true/false)
-- `rating_from` → minimum rating filter (0–5)
+- `q` → Поиск товаров по названию (поиск по подстроке)
+- `price_from` → фильтр минимальной цены
+- `price_to` →  фильтр максимальной цены
+- `category_id` →  фильтр по категории (selected by ID)
+- `in_stock` → фильтр по наличию (true/false)
+- `rating_from` →  фильтр минимального рейтинга (0–5)
 
 ---
 
 ###  Sorting
-The `sort` parameter supports the following values:
-
-- `price_asc` → sort by price (low to high)
-- `price_desc` → sort by price (high to low)
-- `rating_desc` → sort by rating (highest first)
-- `newest` → sort by newest products
+Параметр `sort` поддерживает следующие значения:
+- `price_asc` → сортировка по цене (от низкой к высокой)
+- `price_desc` → сортировка по цене (от высокой к низкой)
+- `rating_desc` → сортировка по рейтингу (от самого высокого к самому низкому)
+- `newest` → сортировка по новизне товаров
 
 ---
 
 ### Pagination
-- All product results are paginated.
-- Default pagination is applied on all requests.
+- Все результаты поиска товаров отображаются с постраничной разбивкой.
+- По умолчанию для всех запросов применяется постраничная разбивка.
 
 ---
 
 ## Data Flow
-The frontend (React.js) communicates with the backend (Laravel API) using HTTP requests to:
+Фронтенд (React.js) взаимодействует с бэкендом (Laravel API) посредством HTTP-запросов к:
 - fetch products
 - apply filters
 - sort results
 - handle pagination
 
-Data is sent and received in JSON format.
+Данные передаются и принимаются в формате JSON.
 
 ---
